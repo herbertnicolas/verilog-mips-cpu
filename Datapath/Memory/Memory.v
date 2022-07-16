@@ -1,7 +1,3 @@
-// Author: Gustavo Farani de Farias
-// E-mail: gff@cin.ufpe.br
-// Date: 16/07/2022
-
 module Memory (
     input wire        clk,
     input wire        mem_read,
