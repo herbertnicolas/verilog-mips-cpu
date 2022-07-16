@@ -1,0 +1,19 @@
+{
+    "add": "0x20",
+    "and": "0x24",
+    "div": "0x1a",
+    "mult": "0x18",
+    "jr": "0x8",
+    "mfhi": "0x10",
+    "mflo": "0x12",
+    "sll": "0x0",
+    "sllv": "0x4",
+    "slt": "0x2a",
+    "sra": "0x3",
+    "srav": "0x7",
+    "srl": "0x2",
+    "sub": "0x22",
+    "break": "0xd",
+    "rte": "0x13",
+    "addm": "0x5"
+}
