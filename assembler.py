@@ -110,7 +110,7 @@ instruction_name_r_rd_rt_shamt = pp.oneOf('sll sra srl')
 instruction_r_rd_rt_shamt = instruction_name_r_rd_rt_shamt + register + pp.Char(',') + register + pp.Char(',') + pp.pyparsing_common.integer
 instruction_r_rd_rt_shamt.setParseAction(lambda tk: r_format(0, tk[3], tk[1], tk[5], int(funct_dict[tk[0]], 0) ))
 
-instruction_r_ = pp.oneOf('break rte')
+instruction_r_ = pp.oneOf('break rte invalid')
 # pp.Literal('break') | pp.Literal('rte')
 instruction_r_.setParseAction(lambda tk: r_format(0, 0, 0, 0, int(funct_dict[tk[0]], 0) ))
 
@@ -133,6 +133,10 @@ def r_format_to_assembly(bitmask):
 instruction_r = instruction_r_rd_rs_rt | instruction_r_rs_rt | instruction_r_rs | instruction_r_rd | instruction_r_rd_rt_shamt | instruction_r_
 mem = [0]*256
 
+# o endereço das rotinas de tratamento das exceções
+for i in range(253, 256):
+    mem[i] = i - 3
+
 with open('instructions.asm') as file:
     address = 0
     for line in file.readlines():
@@ -141,7 +145,7 @@ with open('instructions.asm') as file:
             mem[address + 3 - i] = (bitmask >> (i << 3)) & 255;
         address += 4
 
-with open('mem_init.hex', 'w') as file:
+with open('mem_init_data.hex', 'w') as file:
     for i in range(0, 256, 4):
         for j in range(i, i + 4):
             # format string 02x quer dizer hexadecimal

@@ -2,14 +2,14 @@
 
 module MemoryTestBench;
 
-reg clk, mem_read, mem_write;
+reg clock, mem_read, mem_write;
 reg [7:0] address;
 reg [31:0] data_in;
 wire [31:0] data_out;
 integer i;
 
 Memory Memory_ (
-    clk,
+    clock,
     mem_read,
     mem_write,
     address,
@@ -17,8 +17,8 @@ Memory Memory_ (
     data_out
 );
 
-initial clk = 1'b0;
-always #5 clk = ~clk;
+initial clock = 1'b0;
+always #5 clock = ~clock;
 
 initial begin
     $dumpfile("Memory.vcd");

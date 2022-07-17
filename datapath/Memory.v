@@ -1,5 +1,5 @@
 module Memory (
-    input wire        clk,
+    input wire        clock,
     input wire        mem_read,
     input wire        mem_write,
     input wire [7:0]  address,
@@ -7,7 +7,7 @@ module Memory (
     output reg [31:0] data_out
 );
 
-reg [7:0] mem [255:0];
+reg [7:0] mem [0:255];
 wire [7:0] address_1, address_2, address_3;
 
 assign address_1 = address + 1;
@@ -19,16 +19,16 @@ initial begin
     // with 256 hex values (3F, not 0x3F)
     // separated by spaces or newlines
     // listing the contents of all the bytes stored in memory
-    $readmemh("mem_init.hex", mem);
+    $readmemh("mem_init_data.hex", mem);
 end
 
-always @(posedge clk) begin
+always @(posedge clock) begin
     if (mem_read && !mem_write) begin
         data_out <= {mem[address], mem[address_1], mem[address_2], mem[address_3]};
     end
 end
 
-always @(posedge clk) begin
+always @(posedge clock) begin
     if (mem_write && !mem_read) begin
         mem[address]   <= data_in[31:24];
         mem[address_1] <= data_in[23:16];

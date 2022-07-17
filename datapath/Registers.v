@@ -22,6 +22,7 @@ always @(posedge clock) begin
         for (i = 0; i < 32; i = i + 1) begin
             bank[i] <= 0;
         end
+        bank[5'd29] <= 32'd227;
     end else if (reg_write) begin
         bank[write_register] <= write_data;
     end
