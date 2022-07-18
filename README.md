@@ -8,7 +8,7 @@ Será preciso instalar duas ferramentas de linha de comando:
  * GTKWave (waveforms)
 
 Ambas podem ser facilmente instaladas no Ubuntu com o apt:
-```
+```console
 sudo apt install iverilog gtkwave
 ```
 
@@ -29,5 +29,5 @@ python assembler.py
 Para simular, primeiro gere o dumpfile `CPU.vcd`, e depois visualize os resultados em waveforms com o GTKWave.
 ```console
 vvp CPU.out
-gtkwave CPU.vcd
+gtkwave CPU.vcd --script="signals.tcl"
 ```

@@ -14,7 +14,9 @@ always @(posedge clock) begin
     if (reset) begin
         data <= 0;
     end else begin
-        data <= write_data;
+        if (load) begin
+            data <= write_data;
+        end
     end
 end
 
