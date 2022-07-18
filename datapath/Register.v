@@ -13,10 +13,8 @@ assign read_data = data;
 always @(posedge clock) begin
     if (reset) begin
         data <= 0;
-    end else begin
-        if (load) begin
-            data <= write_data;
-        end
+    end else if (load) begin
+        data <= write_data;
     end
 end
 

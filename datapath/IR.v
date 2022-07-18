@@ -19,7 +19,7 @@ assign address_immediate = instruction[15:0];
 always @(posedge clock) begin
     if (reset) begin
         instruction <= 0;
-    end else begin
+    end else if (ir_write) begin
         instruction <= write_data;
     end
 end
