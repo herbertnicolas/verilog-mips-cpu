@@ -9,6 +9,7 @@
 // TODO include Div
 `include "datapath/words/LoadSize.v"
 `include "datapath/words/StoreSize.v"
+`include "datapath/words/ExceptionByte.v"
 `include "datapath/muxes/MuxIorD.v"
 `include "datapath/muxes/MuxRegDst.v"
 `include "datapath/muxes/MuxMemToReg.v"
@@ -18,7 +19,6 @@
 `include "datapath/muxes/MuxShiftSrc.v"
 `include "datapath/muxes/MuxShiftAmt.v"
 `include "datapath/muxes/MuxMultOrDiv.v"
-`include "datapath/muxes/MuxException.v"
 
 module CPU (
     input wire clock,
@@ -131,6 +131,7 @@ module CPU (
     /* Words */
     wire [31:0] store_size_output;
     wire [31:0] load_size_output;
+    wire [31:0] exception_address;
 
     /* MUXS */
     wire [7:0] mux_i_or_d_output;
@@ -373,13 +374,18 @@ module CPU (
         store_size_output
     );
 
+    ExceptionByte ExceptionByte_ (
+        exception,
+        mem_data,
+        exception_address
+    );
+
 /* MUXES */
     
     MuxIorD MuxIorD_ (
         i_or_d,
         pc_output,
         alu_out_output,
-        mux_exception_output,
         alu_result,
         mux_i_or_d_output
     );
@@ -409,7 +415,7 @@ module CPU (
         alu_out_output,
         jump_address, 
         alu_result,
-        load_size_output,
+        exception_address,
         mux_pc_source_output
     );
     
@@ -458,11 +464,6 @@ module CPU (
         mult_lo,
         div_lo,
         mux_lo_output
-    );
-
-    MuxException MuxException_ (
-        exception,
-        mux_exception_output
     );
 
 endmodule

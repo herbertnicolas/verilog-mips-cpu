@@ -1,21 +1,21 @@
 module MuxPCSource (
-  input  wire [2:0]  PCSource,
-  input  wire [31:0] input0,
-  input  wire [31:0] input1,
-  input  wire [31:0] input2,
-  input  wire [31:0] input3,
-  input  wire [31:0] input4,
-
-  output wire [31:0] result
+  input wire [2:0]  pc_source,
+  input wire [31:0] epc_output,
+  input wire [31:0] alu_out_output,
+  input wire [31:0] jump_address,
+  input wire [31:0] alu_result,
+  input wire [31:0] exception_address,
+  output reg [31:0] mux_pc_source_output
 );
 
-  wire [31:0] aux00x, aux01x, aux0xx;
-
-  assign aux00x = PCSource[0] ? input1 : input0;
-  assign aux01x = PCSource[0] ? input3 : input2;
-
-  assign aux0xx = PCSource[1] ? aux01x : aux00x;
-
-  assign result = PCSource[2] ? input4 : aux0xx;
+always @(*) begin
+  case (pc_source)
+    0: mux_pc_source_output = epc_output;
+    1: mux_pc_source_output = alu_out_output;
+    2: mux_pc_source_output = jump_address;
+    3: mux_pc_source_output = alu_result;
+    4: mux_pc_source_output = exception_address;
+  endcase
+end
 
 endmodule

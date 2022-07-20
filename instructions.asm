@@ -1,1 +1,1 @@
-and $t0, $sp, $sp
+invalid
