@@ -15,6 +15,7 @@
     "sub": "0x22",
     "break": "0xd",
     "rte": "0x13",
-    "addm": "0x5",
+    "push": "0x5",
+    "pop": "0x6",
     "invalid": "0x1"
 }
