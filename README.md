@@ -71,7 +71,6 @@ sudo apt install iverilog gtkwave
 
 Na pasta do repositório, tente primeiro compilar o código em Verilog. O arquivo CPU.v é o principal, e importa todos os demais.
 ```console
-cd verilog-mips-cpu
 iverilog -o CPU.out CPUTestBench.v
 ```
 
@@ -83,6 +82,10 @@ python assembler.py
 
 Para simular, primeiro gere o dumpfile `CPU.vcd`, e depois visualize os resultados em waveforms com o GTKWave.
 ```console
-vvp CPU.out
-gtkwave CPU.vcd --script="signals.tcl"
+vvp CPU.out && gtkwave CPU.vcd --script="signals.tcl"
+```
+
+I'm feeling lucky
+```console
+python assembler.py && iverilog -o CPU.out CPUTestBench.v && vvp CPU.out && gtkwave CPU.vcd --script="signals.tcl"
 ```
