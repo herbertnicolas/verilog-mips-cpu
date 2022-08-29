@@ -1,26 +1,25 @@
 module MuxMemToReg (
-  input  wire [2:0]  MemToReg,
-  input  wire [31:0] input0,
-  input  wire [31:0] input1,
-  input  wire [31:0] input2,
-  input  wire [31:0] input3,
-  input  wire [31:0] input4,
-  input  wire [31:0] input5,
-  input  wire [31:0] input7,
-
-  output wire [31:0] result
+  input  wire [2:0]  mem_to_reg,
+  input  wire [31:0] alu_out_output,
+  input  wire [31:0] load_size_output,
+  input  wire [31:0] hi_output,
+  input  wire [31:0] lo_output,
+  input  wire [31:0] shift_left_16,
+  input  wire [31:0] bit_extend,
+  input  wire [31:0] shift_out,
+  output  reg [31:0] mux_mem_to_reg_output
 );
 
-  wire [31:0] aux00x, aux01x, aux10x, aux11x, aux0xx, aux1xx;
-
-  assign aux00x = MemToReg[0] ? input1 : input0;
-  assign aux01x = MemToReg[0] ? input3 : input2;
-  assign aux10x = MemToReg[0] ? input5 : input4;
-  assign aux11x = MemToReg[0] ? input7 : 32'd227;
-
-  assign aux0xx = MemToReg[1] ? aux01x : aux00x;
-  assign aux1xx = MemToReg[1] ? aux11x : aux10x;
-
-  assign result = MemToReg[2] ? aux1xx : aux0xx;
+always @(*) begin
+  case (mem_to_reg)
+    0: mux_mem_to_reg_output = alu_out_output;
+    1: mux_mem_to_reg_output = load_size_output;
+    2: mux_mem_to_reg_output = hi_output;
+    3: mux_mem_to_reg_output = lo_output;
+    4: mux_mem_to_reg_output = shift_left_16;
+    5: mux_mem_to_reg_output = bit_extend;
+    6: mux_mem_to_reg_output = shift_out;
+  endcase
+end
 
 endmodule
