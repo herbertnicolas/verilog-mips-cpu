@@ -18,7 +18,8 @@
 `include "datapath/muxes/MuxALUSrcB.v"
 `include "datapath/muxes/MuxShiftSrc.v"
 `include "datapath/muxes/MuxShiftAmt.v"
-`include "datapath/muxes/MuxMultOrDiv.v"
+`include "datapath/muxes/MuxDivOrMult.v"
+`include "datapath/muxes/MuxStackPointer.v"
 
 module CPU (
     input wire clock,
@@ -66,13 +67,14 @@ module CPU (
         wire [1:0] i_or_d;
         wire [1:0] reg_dst;
         wire [2:0] mem_to_reg;
-        wire [1:0] alu_src_a;
-        wire [2:0] alu_src_b;
+        wire       alu_src_a;
+        wire [1:0] alu_src_b;
         wire [2:0] pc_source;
         wire       shift_src_ctrl;
-        wire [1:0] shift_amt_ctrl;
-        wire       mult_or_div;
+        wire       shift_amt_ctrl;
+        wire       div_or_mult;
         wire [1:0] exception;
+        wire       stack_pointer_ctrl;
 
     /* ALU */
     wire [31:0] alu_result;
@@ -145,6 +147,7 @@ module CPU (
     wire [31:0] mux_hi_output;
     wire [31:0] mux_lo_output;
     wire [31:0] mux_exception_output;
+    wire [4:0]  mux_stack_pointer_output;
     
     /* Extends */
     wire [31:0] bit_extend;
@@ -201,8 +204,9 @@ module CPU (
         pc_source,
         shift_src_ctrl,
         shift_amt_ctrl,
-        mult_or_div,
-        exception
+        div_or_mult,
+        exception,
+        stack_pointer_ctrl
     );
 
 /* PARTS GIVEN */
@@ -253,6 +257,8 @@ module CPU (
     );
 
     Shift Shift_ (
+        clock,
+        reset,
         shift_ctrl,
         mux_shift_amt_output,
         mux_shift_src_output,
@@ -339,7 +345,7 @@ module CPU (
     mult Mult_ (
         clock,
         reset,
-        mult_or_div,
+        div_or_mult,
         a_output,
         b_output,
         mult_hi,
@@ -350,7 +356,7 @@ module CPU (
     div Div_ (
         clock,
         reset,
-        mult_or_div, //in
+        div_or_mult, //in
         a_output, //in
         b_output, //in
         div_hi,
@@ -369,8 +375,8 @@ module CPU (
 
     StoreSize StoreSize_ (
         store_size_ctrl,
-        mdr_output,
         b_output,
+        mdr_output,
         store_size_output
     );
 
@@ -403,18 +409,18 @@ module CPU (
         load_size_output,
         hi_output,
         lo_output,
-        shift_out,
-        bit_extend,
         shift_left_16,
+        bit_extend,
+        shift_out,
         mux_mem_to_reg_output
     );
 
     MuxPCSource MuxPCSource_ (
         pc_source,
-        epc_output,
+        alu_result,
         alu_out_output,
         jump_address, 
-        alu_result,
+        epc_output,
         exception_address,
         mux_pc_source_output
     );
@@ -423,8 +429,6 @@ module CPU (
         alu_src_a,
         pc_output,
         a_output,
-        aux_a_output,
-        b_output,
         mux_alu_src_a_output
     );
 
@@ -433,37 +437,41 @@ module CPU (
         b_output,
         sign_extend,
         address,
-        mdr_output,
         mux_alu_src_b_output
     );
 
     MuxShiftSrc MuxShiftSrc_ (
         shift_src_ctrl,
-        a_output,
         b_output,
+        a_output,
         mux_shift_src_output
     );
 
     MuxShiftAmt MuxShiftAmt_ (
         shift_amt_ctrl,
-        b_output,
         shamt,
-        mdr_output,
+        b_output,
         mux_shift_amt_output
     );
 
-    MuxMultOrDiv MuxHI_ (
-        mult_or_div,
-        mult_hi,
+    MuxDivOrMult MuxHI_ (
+        div_or_mult,
         div_hi,
+        mult_hi,
         mux_hi_output
     );
 
-    MuxMultOrDiv MuxLO_ (
-        mult_or_div,
-        mult_lo,
+    MuxDivOrMult MuxLO_ (
+        div_or_mult,
         div_lo,
+        mult_lo,
         mux_lo_output
+    );
+
+    MuxStackPointer MuxStackPointer_ (
+        stack_pointer_ctrl,
+        rs,
+        mux_stack_pointer_output
     );
 
 endmodule
