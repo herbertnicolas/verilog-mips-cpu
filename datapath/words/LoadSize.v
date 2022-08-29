@@ -1,11 +1,15 @@
 module LoadSize (
-  input  wire [1:0] LoadSizeCtrl,
-  input  wire [31:0] data_in,
-  output wire [31:0] data_out
+  input  wire [1:0]  load_size_ctrl,
+  input  wire [31:0] mdr_output,
+  output  reg [31:0] load_size_output
 );
 
-  wire [31:0] aux;
-  assign aux = LoadSizeCtrl[0] ? {{24{1'b0}}, data_in[7:0]} : data_in;
-  assign data_out = LoadSizeCtrl[1] ? {{16{1'b0}}, data_in[15:0]} : aux;
+always @(*) begin
+  case (load_size_ctrl)
+    0: load_size_output = mdr_output;
+    1: load_size_output = {24'b0, mdr_output[31:24]};
+    2: load_size_output = {16'b0, mdr_output[31:16]};
+  endcase
+end
 
 endmodule
