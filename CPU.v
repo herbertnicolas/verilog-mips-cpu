@@ -52,8 +52,6 @@ module CPU (
         wire       alu_out_write;
         // MDR
         wire       mdr_write;
-        // AuxA
-        wire       write_aux_a;
         // HI, LO
         wire       hi_write;
         wire       lo_write;
@@ -118,7 +116,6 @@ module CPU (
     wire [31:0] b_output;
     wire [31:0] alu_out_output;
     wire [31:0] mdr_output;
-    wire [31:0] aux_a_output;
     wire [31:0] hi_output;
     wire [31:0] lo_output;
 
@@ -313,14 +310,6 @@ module CPU (
         mdr_write,
         mem_data,
         mdr_output
-    );
-
-    Register AuxA_ (
-        clock,
-        reset,
-        write_aux_a,
-        mdr_output,
-        aux_a_output
     );
 
     Register HI_ (
