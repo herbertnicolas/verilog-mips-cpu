@@ -1,7 +1,6 @@
-addi $t0, $zero, 0
-addi $t1, $zero, 0
-addi $t0, $t0, 1
-addi $t1, $t1, 2
-jal 2
-sll $s0, $t0, 3
-srl $s1, $t0, 2
+lui $t0, 5000
+addi $t0, $t0, 8200
+sh $t0, 252($zero)
+lw $t1, 252($zero)
+lb $t2, 252($zero)
+lh $t3, 252($zero)

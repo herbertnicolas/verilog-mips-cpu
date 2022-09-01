@@ -76,7 +76,6 @@ parameter STATE_JAL = 7'd28;
 parameter STATE_SLL = 7'd29;
 parameter STATE_SRL = 7'd30;
 parameter STATE_SRA = 7'd31;
-parameter STATE_SLLV = 7'd45;
 parameter STATE_SRAV = 7'd32;
 parameter STATE_SHIFT_TO_REG = 7'd33;
 parameter STATE_LOAD_ALU_RESULT = 7'd34;
@@ -90,6 +89,13 @@ parameter STATE_MFHI = 7'd41;
 parameter STATE_MFLO = 7'd42;
 parameter STATE_DIV_WAIT = 7'd43;
 parameter STATE_MULT_WAIT = 7'd44;
+parameter STATE_LW = 7'd45;
+parameter STATE_LB = 7'd46;
+parameter STATE_LH = 7'd47;
+parameter STATE_SW = 7'd48;
+parameter STATE_SB = 7'd49;
+parameter STATE_SH = 7'd50;
+parameter STATE_SLLV = 7'd51;
 
 // opcodes
 parameter OPCODE_R = 6'h0;
@@ -1281,20 +1287,94 @@ always @(negedge clock) begin
                 //-----------------//
                 // TODO asynchronous control signals
                 alu_src_a <= 1;
-                alu_src_b <= 3;
+                alu_src_b <= 2;
                 alu_ctrl <= ALU_ADD;
                 i_or_d <= 3;
+                //-----------------//
                 case (opcode)
                     OPCODE_LW: begin
-                        load_size_ctrl <= 0;
+                        state <= STATE_LW;
                     end
                     OPCODE_LB: begin
-                        load_size_ctrl <= 1;
+                        state <= STATE_LB;
                     end
                     OPCODE_LH: begin
-                        load_size_ctrl <= 2;
+                        state <= STATE_LH;
                     end
                 endcase
+            end
+            STATE_LW: begin
+                mem_read        <= 0;
+                mem_write       <= 0;
+                ir_write        <= 0;
+                reg_write       <= 0;
+                pc_write        <= 0;
+                epc_write       <= 0;
+                write_a         <= 0;
+                write_b         <= 0;
+                alu_out_write   <= 0;
+
+                
+                hi_write        <= 0;
+                lo_write        <= 0;
+                mult_start      <= 0;
+                div_start       <= 0;
+                //-----------------//
+                // TODO synchronous control signals
+                mdr_write <= 1;
+                //-----------------//
+                // TODO asynchronous control signals
+                load_size_ctrl <= 0;
+                //-----------------//
+                state <= STATE_LOAD_SIZE;
+            end
+            STATE_LB: begin
+                mem_read        <= 0;
+                mem_write       <= 0;
+                ir_write        <= 0;
+                reg_write       <= 0;
+                pc_write        <= 0;
+                epc_write       <= 0;
+                write_a         <= 0;
+                write_b         <= 0;
+                alu_out_write   <= 0;
+
+                
+                hi_write        <= 0;
+                lo_write        <= 0;
+                mult_start      <= 0;
+                div_start       <= 0;
+                //-----------------//
+                // TODO synchronous control signals
+                mdr_write <= 1;
+                //-----------------//
+                // TODO asynchronous control signals
+                load_size_ctrl <= 1;
+                //-----------------//
+                state <= STATE_LOAD_SIZE;
+            end
+            STATE_LH: begin
+                mem_read        <= 0;
+                mem_write       <= 0;
+                ir_write        <= 0;
+                reg_write       <= 0;
+                pc_write        <= 0;
+                epc_write       <= 0;
+                write_a         <= 0;
+                write_b         <= 0;
+                alu_out_write   <= 0;
+
+                
+                hi_write        <= 0;
+                lo_write        <= 0;
+                mult_start      <= 0;
+                div_start       <= 0;
+                //-----------------//
+                // TODO synchronous control signals
+                mdr_write <= 1;
+                //-----------------//
+                // TODO asynchronous control signals
+                load_size_ctrl <= 2;
                 //-----------------//
                 state <= STATE_LOAD_SIZE;
             end
@@ -1346,7 +1426,7 @@ always @(negedge clock) begin
                 //-----------------//
                 // TODO asynchronous control signals
                 alu_src_a <= 1;
-                alu_src_b <= 3;
+                alu_src_b <= 2;
                 alu_ctrl <= ALU_ADD;
                 //-----------------//
                 state <= STATE_LOAD_ALU_OUT;
@@ -1361,7 +1441,7 @@ always @(negedge clock) begin
                 write_a         <= 0;
                 write_b         <= 0;
                 alu_out_write   <= 0;
-                
+                mdr_write       <= 0;
                 
                 hi_write        <= 0;
                 lo_write        <= 0;
@@ -1370,21 +1450,94 @@ always @(negedge clock) begin
                 //-----------------//
                 // TODO synchronous control signals
                 mem_read <= 1;
-                mdr_write <= 1;
                 //-----------------//
                 // TODO asynchronous control signals
                 i_or_d <= 1;
+                //-----------------//
                 case (opcode)
                     OPCODE_SW: begin
-                        store_size_ctrl <= 0;
+                        state <= STATE_SW;
                     end
                     OPCODE_SB: begin
-                        store_size_ctrl <= 1;
+                        state <= STATE_SB;
                     end
                     OPCODE_SH: begin
-                        store_size_ctrl <= 2;
+                        state <= STATE_SH;
                     end
                 endcase
+            end
+            STATE_SW: begin
+                mem_read        <= 0;
+                mem_write       <= 0;
+                ir_write        <= 0;
+                reg_write       <= 0;
+                pc_write        <= 0;
+                epc_write       <= 0;
+                write_a         <= 0;
+                write_b         <= 0;
+                alu_out_write   <= 0;
+
+                
+                hi_write        <= 0;
+                lo_write        <= 0;
+                mult_start      <= 0;
+                div_start       <= 0;
+                //-----------------//
+                // TODO synchronous control signals
+                mdr_write <= 1;
+                //-----------------//
+                // TODO asynchronous control signals
+                store_size_ctrl <= 0;
+                //-----------------//
+                state <= STATE_STORE_SIZE;
+            end
+            STATE_SB: begin
+                mem_read        <= 0;
+                mem_write       <= 0;
+                ir_write        <= 0;
+                reg_write       <= 0;
+                pc_write        <= 0;
+                epc_write       <= 0;
+                write_a         <= 0;
+                write_b         <= 0;
+                alu_out_write   <= 0;
+
+                
+                hi_write        <= 0;
+                lo_write        <= 0;
+                mult_start      <= 0;
+                div_start       <= 0;
+                //-----------------//
+                // TODO synchronous control signals
+                mdr_write <= 1;
+                //-----------------//
+                // TODO asynchronous control signals
+                store_size_ctrl <= 1;
+                //-----------------//
+                state <= STATE_STORE_SIZE;
+            end
+            STATE_SH: begin
+                mem_read        <= 0;
+                mem_write       <= 0;
+                ir_write        <= 0;
+                reg_write       <= 0;
+                pc_write        <= 0;
+                epc_write       <= 0;
+                write_a         <= 0;
+                write_b         <= 0;
+                alu_out_write   <= 0;
+
+                
+                hi_write        <= 0;
+                lo_write        <= 0;
+                mult_start      <= 0;
+                div_start       <= 0;
+                //-----------------//
+                // TODO synchronous control signals
+                mdr_write <= 1;
+                //-----------------//
+                // TODO asynchronous control signals
+                store_size_ctrl <= 2;
                 //-----------------//
                 state <= STATE_STORE_SIZE;
             end
@@ -1406,7 +1559,7 @@ always @(negedge clock) begin
                 div_start       <= 0;
                 //-----------------//
                 // TODO synchronous control signals
-                mem_write       <= 1;
+                mem_write <= 1;
                 //-----------------//
                 // TODO asynchronous control signals
                 i_or_d <= 1;
