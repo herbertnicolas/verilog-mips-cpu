@@ -249,7 +249,7 @@ module CPU (
         clock,
         reset,
         reg_write,
-        rs,
+        mux_stack_pointer_output,
         rt,
         mux_reg_dst_output,
         mux_mem_to_reg_output,
