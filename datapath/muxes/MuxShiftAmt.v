@@ -5,6 +5,6 @@ module MuxShiftAmt (
   output wire [4:0]  mux_shift_amt_output
 );
 
-  assign result = shift_amt_ctrl ? b_output[4:0] : shamt;
+  assign mux_shift_amt_output = shift_amt_ctrl ? b_output[4:0] : shamt;
 
 endmodule

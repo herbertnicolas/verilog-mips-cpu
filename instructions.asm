@@ -1,5 +1,12 @@
-addi $t0, $zero, -3
-addi $t1, $zero,  0
-div $t0, $t1
-mfhi $t2
-mflo $t3
+addi $t0, $zero, 10
+addi $t1, $zero, -6
+addi $t2, $zero, 1
+addi $t3, $zero, 2
+sll $s0, $t0, 3
+srl $s1, $t0, 2
+sra $s2, $t0, 2
+srl $s3, $t1, 1
+sra $s4, $t1, 1
+sllv $s5, $t1, $t3
+srav $s6, $t1, $t2
+sllv $s7, $t0, $t3
