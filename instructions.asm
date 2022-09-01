@@ -1,5 +1,5 @@
-lui $t0, 32767
-addi $t0, $t0, 32767
-lui $t1, 32767
-addi $t1, $t1, 1
-add $t2, $t0, $t1
+addi $t0, $zero, -3
+addi $t1, $zero,  0
+div $t0, $t1
+mfhi $t2
+mflo $t3

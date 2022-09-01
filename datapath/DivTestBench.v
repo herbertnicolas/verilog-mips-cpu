@@ -92,6 +92,16 @@ initial begin
         #10;
     end
     #5;
+    dividend = 32'd13;
+    divisor = 32'd5;
+    div_start = 1;
+    #10;
+    div_start = 0;
+    #5;
+    while (~finished) begin
+        #10;
+    end
+    #5;
     $finish;
 end
 

@@ -17,7 +17,7 @@ wire [31:0] abs_divisor, abs_dividend;
 assign div_zero = divisor == 0;
 assign abs_divisor = divisor[31] ? -divisor : divisor;
 assign abs_dividend = dividend[31] ? -dividend : dividend;
-assign finished = subtract < abs_divisor;
+assign finished = shift_right < {32'b0, abs_divisor};
 assign quotient = (divisor[31] ^ dividend[31]) ? -shift_left : shift_left;
 assign remainder = dividend[31] ? -subtract : subtract;
 

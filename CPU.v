@@ -5,8 +5,8 @@
 `include "datapath/Registers.v"
 `include "datapath/Shift.v"
 `include "datapath/Register.v"
-// TODO include Mult
-// TODO include Div
+`include "datapath/Mult.v"
+`include "datapath/Div.v"
 `include "datapath/words/LoadSize.v"
 `include "datapath/words/StoreSize.v"
 `include "datapath/words/ExceptionByte.v"
@@ -58,6 +58,8 @@ module CPU (
         // Mult, Div
         wire       mult_start;
         wire       div_start;
+        wire       mult_finished;
+        wire       div_finished;
         // Sizes
         wire [1:0] load_size_ctrl;
         wire [1:0] store_size_ctrl;
@@ -173,6 +175,8 @@ module CPU (
         greater_than,
         equal_to,
         overflow,
+        mult_finished,
+        div_finished,
         div_zero,
         alu_ctrl,
         mem_read,
@@ -329,30 +333,29 @@ module CPU (
     );
 
 /* MULT, DIV */
-    /*
-    // TODO garantir que Mult tá certo
-    mult Mult_ (
+
+    Mult Mult_ (
         clock,
         reset,
-        div_or_mult,
+        mult_start,
         a_output,
         b_output,
+        mult_finished,
         mult_hi,
         mult_lo
     );
 
-    // TODO garantir que Div tá certo
-    div Div_ (
+    Div Div_ (
         clock,
         reset,
-        div_or_mult, //in
-        a_output, //in
-        b_output, //in
-        div_hi,
+        div_start,
+        a_output,
+        b_output,
+        div_zero,
+        div_finished,
         div_lo,
-        div_zero
-    ); //ok
-    */
+        div_hi
+    );
 
 /* WORDS */
 
