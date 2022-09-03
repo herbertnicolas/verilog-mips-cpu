@@ -19,6 +19,9 @@ assign read_data_2 = bank[read_register_2];
 
 always @(posedge clock) begin
     if (reset) begin
+        for (i = 0; i < 32; i = i + 1) begin
+            bank[i] <= 0;
+        end
         bank[5'd0] <= 32'd0;
         bank[5'd29] <= 32'd227;
     end else if (reg_write) begin
