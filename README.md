@@ -92,5 +92,8 @@ python assembler.py && iverilog -o CPU.out CPUTestBench.v && vvp CPU.out && gtkw
 
 ## Windows GTKWave
 ```console
+python assembler.py
+iverilog -o CPU.out CPUTestBench.v
+vvp CPU.out
 gtkwave CPU.vcd --script="windows.tcl"
 ```
