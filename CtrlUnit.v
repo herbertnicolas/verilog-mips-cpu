@@ -252,7 +252,7 @@ always @(negedge clock) begin
                 write_a         <= 0;
                 write_b         <= 0;
                 alu_out_write   <= 0;
-                mdr_write       <= 0;
+
                 
                 hi_write        <= 0;
                 lo_write        <= 0;
@@ -262,6 +262,7 @@ always @(negedge clock) begin
                 // TODO synchronous control signals
                 pc_write <= 1;
                 ir_write <= 1;
+                mdr_write <= 1;
                 //-----------------//
                 // TODO asynchronous control signals
                 pc_source <= 0;
