@@ -66,7 +66,7 @@ instruction_name_r_shift = pp.oneOf('sll sra srl')
 instruction_r_shift = instruction_name_r_shift + register + pp.Char(',') + register + pp.Char(',') + pp.pyparsing_common.integer
 instruction_r_shift.setParseAction(lambda tk: r_format(0, tk[3], tk[1], tk[5], tk[0]) )
 
-instruction_r_op = pp.oneOf('break rte')
+instruction_r_op = pp.oneOf('break rte invalid')
 instruction_r_op.setParseAction(lambda tk: r_format(0, 0, 0, 0, tk[0]) )
 
 instruction_name_r_sp = pp.oneOf('push pop')
